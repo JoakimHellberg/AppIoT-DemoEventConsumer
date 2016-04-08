@@ -37,4 +37,11 @@
 			<version>0.8.2</version>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>appiot-repo</id>
+			<name>AppIoT Nexus Server</name>
+			<url>http://sensation-repo.cloudapp.net:8081/nexus/</url>
+		</repository>
+	</repositories>	
 </project>
