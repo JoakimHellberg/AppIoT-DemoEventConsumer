@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.ericsson.appiot.demo.event.consumer.model.UIEventMessage;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import se.sigma.sensation.event.sdk.EventManager;
 import se.sigma.sensation.event.sdk.EventMessageListener;
@@ -40,18 +41,23 @@ public class MyEventProcessor implements EventMessageListener {
 			UIEventMessage message = new UIEventMessage(eventMessage);
 			eventList.add(message);
 		} else {
-			EventMessage removeMe = null;
+			UIEventMessage removeMe = null;
 			ListIterator<UIEventMessage> existingEvents = eventList.listIterator();
 			while(existingEvents.hasNext()) {
 				UIEventMessage existing = existingEvents.next();
 				EventMessage existingSource = existing.getSource();
 				if(existingSource.getId().equals(eventMessage.getId())) {
-					removeMe = existing.getSource(); 
+					removeMe = existing; 
 				}
 			}
 			if(removeMe != null) {
-				eventList.remove(removeMe);
-				eventList.notifyAll();
+				final UIEventMessage removeMeLater = removeMe;
+				Platform.runLater(new Runnable() {
+				    public void run() {
+				    	eventList.remove(removeMeLater);
+				    }
+				});
+				
 			}
 		}
 	}
