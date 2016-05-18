@@ -51,6 +51,7 @@ public class MyEventProcessor implements EventMessageListener {
 			}
 			if(removeMe != null) {
 				eventList.remove(removeMe);
+				eventList.notifyAll();
 			}
 		}
 	}
